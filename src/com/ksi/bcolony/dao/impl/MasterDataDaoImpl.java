@@ -46,8 +46,8 @@ public class MasterDataDaoImpl implements MasterDataDao {
 
 	@Override
 	public String save(MasterData mdata) {
-		mdata.setCreatedOn(new Date());
-		mdata.setModifiedOn(new Date());
+		mdata.setCreatedOn(new Date().getTime());
+		mdata.setModifiedOn(new Date().getTime());
 		return (String) session().save(mdata);
 	}
 
@@ -59,7 +59,7 @@ public class MasterDataDaoImpl implements MasterDataDao {
 								+ " where name=? and type=? and speciesId=? and customerId=?");
 		q.setString(0, mdata.getDescription());
 		q.setString(1, mdata.getModifiedBy());
-		q.setDate(2, new Date());
+		q.setLong(2, new Date().getTime());
 		q.setString(3, mdata.getName());
 		q.setString(4, mdata.getType());
 		q.setInteger(5, mdata.getSpeciesId());
@@ -75,7 +75,7 @@ public class MasterDataDaoImpl implements MasterDataDao {
 						"update MasterData set deleted=1,modifiedBy=?,modifiedOn=? where name=? and type=?"
 								+ " and speciesId=? and customerId=?");
 		q.setString(0, usrId);
-		q.setDate(1, new Date());
+		q.setLong(1, new Date().getTime());
 		q.setString(2, name);
 		q.setString(3, type);
 		q.setInteger(4, speciesId);

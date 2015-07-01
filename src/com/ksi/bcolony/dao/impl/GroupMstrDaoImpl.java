@@ -44,8 +44,8 @@ public class GroupMstrDaoImpl implements GroupMstrDao {
 
 	@Override
 	public String save(GroupMstr mdata) {
-		mdata.setCreatedOn(new Date());
-		mdata.setModifiedOn(new Date());
+		mdata.setCreatedOn(new Date().getTime());
+		mdata.setModifiedOn(new Date().getTime());
 		return (String) session().save(mdata);
 	}
 

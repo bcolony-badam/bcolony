@@ -36,9 +36,9 @@ public class GroupMstr {
 	private String modifiedBy;
 
 	@Column(updatable = false)
-	private Date createdOn;
+	private long createdOn;
 
-	private Date modifiedOn;
+	private long modifiedOn;
 
 	@Transient
 	private String spName;
@@ -101,19 +101,19 @@ public class GroupMstr {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getCreatedOn() {
+	public long getCreatedOn() {
 		return createdOn;
 	}
 
-	public void setCreatedOn(Date createdOn) {
+	public void setCreatedOn(long createdOn) {
 		this.createdOn = createdOn;
 	}
 
-	public Date getModifiedOn() {
+	public long getModifiedOn() {
 		return modifiedOn;
 	}
 
-	public void setModifiedOn(Date modifiedOn) {
+	public void setModifiedOn(long modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
 
