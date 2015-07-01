@@ -21,5 +21,7 @@ public class Initializer extends
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
+	
+	
 
 }

@@ -87,7 +87,7 @@ public class MasterDataDaoImpl implements MasterDataDao {
 	@Override
 	public List<MasterData> list(String type, int customerId) {
 		Query q = session().createQuery(
-				"from MasterData where type=? and customerId=?");
+				"from MasterData where type=? and customerId=? ");
 		q.setString(0, type);
 		q.setInteger(1, customerId);
 		return q.list();

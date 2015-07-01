@@ -56,7 +56,7 @@ public class GroupMstrDaoImpl implements GroupMstrDao {
 						+ " where name=? and speciesId=? and customerId=?");
 		q.setString(0, mdata.getDescription());
 		q.setString(1, mdata.getModifiedBy());
-		q.setDate(2, new Date());
+		q.setLong(2, new Date().getTime());
 		q.setString(3, mdata.getName());
 		q.setInteger(4, mdata.getSpeciesId());
 		q.setInteger(5, mdata.getCustomerId());
@@ -70,7 +70,7 @@ public class GroupMstrDaoImpl implements GroupMstrDao {
 				"update GroupMstr set deleted=1,modifiedBy=?,modifiedOn=? where name=? "
 						+ "and speciesId=? and customerId=?");
 		q.setString(0, loginId);
-		q.setDate(1, new Date());
+		q.setLong(1, new Date().getTime());
 		q.setString(2, name);
 		q.setInteger(3, speciesId);
 		q.setInteger(4, customerId);
