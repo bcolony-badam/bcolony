@@ -5,16 +5,17 @@
 <title>Breeding Colony</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet">
+<link href="assets/plugins/bootstrap/bootstrapValidator.min.css" rel="stylesheet">
 <link href="assets/css/font-awesome.css" rel="stylesheet">
 <link href="assets/css/style.css" rel="stylesheet">
 <script src="assets/plugins/jquery/jquery.min.js"></script>
-<script src="assets/plugins/jquery-validate/jquery.validate.min.js"></script>
+<script src="assets/plugins/bootstrapvalidator/bootstrapValidator.min.js"></script>
 <script src="assets/js/html5shiv.min.js"></script>
 <script src="assets/js/respond.min.js"></script>
 
 </head>
 <body>
-<form id="login" method="post" action="usr/login" class="ajax-link" novalidate>
+<form id="login">
 		<div class="container-fluid">
 			<div id="page-login" class="row">
 				<div
@@ -58,7 +59,7 @@
 		        });
 		        return o;
 		    };
-		    $("#login").validate();
+		    $('#login').bootstrapValidator();
 			$('#login').on('submit', function(e) {
 				e.preventDefault();
 				if ($(this).hasClass('ajax-link')) {
