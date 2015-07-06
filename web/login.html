@@ -50,10 +50,6 @@
 	</form>
 	<script>
 		$(document).ready(function() {
-			/* 			if (!("autofocus" in document.createElement("input"))) {
-			 $('#usrId').focus();
-			 }
-			 */
 			$('#form').validator().on('submit', function(e) {
 				if (!e.isDefaultPrevented()) {
 					$.ajax({
@@ -63,7 +59,7 @@
 							if (data === true) {
 								window.location = "index.html";
 							} else {
-
+								alert("UserId/Password not match");
 							}
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
