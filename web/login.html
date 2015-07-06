@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Breeding Colony</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/font-awesome.css" rel="stylesheet">
+<link href="assets/css/bcolony.css" rel="stylesheet">
+<script src="assets/plugins/jquery/jquery.min.js"></script>
+<script src="assets/js/html5shiv.min.js"></script>
+<script src="assets/js/respond.min.js"></script>
+<script src="assets/plugins/bootstrap/bootstrap.js"></script>
+<script src="assets/plugins/bootsrapvalidator/validator.js"></script>
+<script src="assets/js/bcolony.js"></script>
+
+</head>
+<body>
+	<form data-toggle="validator" id="form">
+		<div class="container-fluid">
+			<div id="page-login" class="row">
+				<div
+					class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+					<div class="box">
+						<div class="box-content">
+							<div class="text-center">
+								<h3 class="page-header">Breeding Colony v1.0</h3>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="usrId">User Id</label> <input
+									type="text" class="form-control" name="usrId" id="usrId"
+									autofocus="autofocus" required="required" />
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="password">Password</label> <input
+									type="password" class="form-control" name="password"
+									id="password" required="required" />
+								<div class="help-block with-errors"></div>
+							</div>
+							<div class="text-center">
+								<button type="submit" class="btn btn-primary" id="signin">Sign
+									in</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<script>
+		$(document).ready(function() {
+			/* 			if (!("autofocus" in document.createElement("input"))) {
+			 $('#usrId').focus();
+			 }
+			 */
+			$('#form').validator().on('submit', function(e) {
+				if (!e.isDefaultPrevented()) {
+					$.ajax({
+						url : "usr/login",
+						type : 'POST',
+						success : function(data) {
+							if (data === true) {
+								window.location = "index.html";
+							} else {
+
+							}
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							alert(errorThrown);
+						},
+						dataType : "json",
+						async : false,
+						data : JSON.stringify($("#form").serializeObject()),
+						contentType : 'application/json'
+					});
+				}
+				e.preventDefault();
+			});
+		});
+	</script>
+</body>
+</html>
