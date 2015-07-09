@@ -26,7 +26,7 @@
     $.extend(Validator.VALIDATORS, options.custom)
 
     this.$element.attr('novalidate', true) // disable automatic native validation
-    this.toggleSubmit()
+    //this.toggleSubmit()
 
     this.$element.on('input.bs.validator change.bs.validator focusout.bs.validator', $.proxy(this.validateInput, this))
     this.$element.on('submit.bs.validator', $.proxy(this.onSubmit, this))
@@ -42,13 +42,14 @@
   }
 
   Validator.DEFAULTS = {
-    delay: 500,
+    delay: 0,
     html: false,
     disable: true,
     custom: {},
     errors: {
       match: 'Does not match',
-      minlength: 'Not long enough'
+      minlength: 'Not long enough',
+      native:'This is a required field'
     },
     feedback: {
       success: 'glyphicon-ok',
@@ -97,7 +98,7 @@
         self.$element.trigger(e)
       }
 
-      self.toggleSubmit()
+      //self.toggleSubmit()
 
       self.$element.trigger($.Event('validated.bs.validator', {relatedTarget: $el[0]}))
     })
@@ -115,8 +116,9 @@
     function getErrorMessage(key) {
       return $el.data(key + '-error')
         || $el.data('error')
-        || key == 'native' && $el[0].validationMessage
         || options.errors[key]
+        || key == 'native' && $el[0].validationMessage
+        
     }
 
     $.each(Validator.VALIDATORS, $.proxy(function (key, validator) {
