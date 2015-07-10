@@ -17,9 +17,8 @@ public class MasterDataServiceImpl implements MasterDataService {
 	MasterDataDao mDao;
 
 	@Override
-	public MasterData get(int customerId, String type, String name,
-			int speciesId) {
-		return mDao.get(customerId, type, name, speciesId);
+	public MasterData get(int customerId, String id) {
+		return mDao.get(customerId, id);
 	}
 
 	@Override
@@ -36,9 +35,8 @@ public class MasterDataServiceImpl implements MasterDataService {
 
 	@Override
 	@Transactional
-	public void delete(int customerId, String type, String name, int speciesId,
-			String loginId) {
-		mDao.delete(customerId, type, name, speciesId, loginId);
+	public void delete(int customerId, String id, String loginId) {
+		mDao.delete(customerId, id, loginId);
 	}
 
 	@Override

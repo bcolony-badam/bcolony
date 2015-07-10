@@ -23,43 +23,33 @@ public class MasterDataController {
 	@Autowired
 	SessionData session;
 
-	@RequestMapping(value = "/{type}/{speciesId}/{name}", method = RequestMethod.GET)
-	public MasterData get(@PathVariable("type") String type,
-			@PathVariable("name") String name,
-			@PathVariable("speciesId") int speciesId) {
-		return service.get(session.getCustomerId(), type, name, speciesId);
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.GET)
+	public MasterData get(@PathVariable("id") String id) {
+		return service.get(session.getCustomerId(), id);
 	}
 
-	@RequestMapping(value = "/{type}/{speciesId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{type}", method = RequestMethod.POST)
 	public String save(@PathVariable("type") String type,
-			@PathVariable int speciesId, @RequestBody MasterData mdata) {
+			@RequestBody MasterData mdata) {
 		mdata.setType(type);
-		mdata.setSpeciesId(speciesId);
 		mdata.setCustomerId(session.getCustomerId());
 		mdata.setCreatedBy(session.getLoginId());
 		mdata.setModifiedBy(session.getLoginId());
 		return service.save(mdata);
 	}
 
-	@RequestMapping(value = "/{type}/{speciesId}/{name}", method = RequestMethod.PUT)
-	public void update(@PathVariable("type") String type,
-			@PathVariable("name") String name,
-			@PathVariable("speciesId") int speciesId,
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.PUT)
+	public void update(@PathVariable("id") String id,
 			@RequestBody MasterData mdata) {
-		mdata.setType(type);
-		mdata.setSpeciesId(speciesId);
-		mdata.setName(name);
+		mdata.setId(id);
 		mdata.setCustomerId(session.getCustomerId());
 		mdata.setModifiedBy(session.getLoginId());
 		service.update(mdata);
 	}
 
-	@RequestMapping(value = "/{type}/{speciesId}/{name}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable("type") String type,
-			@PathVariable("name") String name,
-			@PathVariable("speciesId") int speciesId) {
-		service.delete(session.getCustomerId(), type, name, speciesId,
-				session.getLoginId());
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable("id") String id) {
+		service.delete(session.getCustomerId(), id, session.getLoginId());
 	}
 
 	@RequestMapping(value = "/{type}", method = RequestMethod.GET)
@@ -67,7 +57,7 @@ public class MasterDataController {
 		return service.list(type, session.getCustomerId());
 	}
 
-	@RequestMapping(value = "/{type}/{speciesId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{type}/{speciesId}/0", method = RequestMethod.GET)
 	public List<MasterData> list(@PathVariable("type") String type,
 			@PathVariable int speciesId) {
 		return service.list(type, session.getCustomerId(), speciesId);

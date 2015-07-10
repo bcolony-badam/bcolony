@@ -32,15 +32,11 @@ public class MasterDataDaoImpl implements MasterDataDao {
 	}
 
 	@Override
-	public MasterData get(int customerId, String type, String name,
-			int speciesId) {
+	public MasterData get(int customerId, String id) {
 		Query q = session().createQuery(
-				"from MasterData where name=? and type=?"
-						+ " and speciesId=? and customerId=?");
-		q.setString(0, name);
-		q.setString(1, type);
-		q.setInteger(2, speciesId);
-		q.setInteger(3, customerId);
+				"from MasterData where id=? and customerId=?");
+		q.setString(0, id);
+		q.setInteger(1, customerId);
 		return (MasterData) q.uniqueResult();
 	}
 
@@ -53,33 +49,26 @@ public class MasterDataDaoImpl implements MasterDataDao {
 
 	@Override
 	public void update(MasterData mdata) {
-		Query q = session()
-				.createQuery(
-						"update MasterData set description=?,modifiedBy=?,modifiedOn=?"
-								+ " where name=? and type=? and speciesId=? and customerId=?");
+		Query q = session().createQuery(
+				"update MasterData set description=?,modifiedBy=?,modifiedOn=?"
+						+ " where id=? and customerId=?");
 		q.setString(0, mdata.getDescription());
 		q.setString(1, mdata.getModifiedBy());
 		q.setLong(2, new Date().getTime());
-		q.setString(3, mdata.getName());
-		q.setString(4, mdata.getType());
-		q.setInteger(5, mdata.getSpeciesId());
-		q.setInteger(6, mdata.getCustomerId());
+		q.setString(3, mdata.getId());
+		q.setInteger(4, mdata.getCustomerId());
 		q.executeUpdate();
 	}
 
 	@Override
-	public void delete(int customerId, String type, String name, int speciesId,
-			String usrId) {
+	public void delete(int customerId, String id, String usrId) {
 		Query q = session()
 				.createQuery(
-						"update MasterData set deleted=1,modifiedBy=?,modifiedOn=? where name=? and type=?"
-								+ " and speciesId=? and customerId=?");
+						"update MasterData set deleted=1,modifiedBy=?,modifiedOn=? where id=? and customerId=?");
 		q.setString(0, usrId);
 		q.setLong(1, new Date().getTime());
-		q.setString(2, name);
-		q.setString(3, type);
-		q.setInteger(4, speciesId);
-		q.setInteger(5, customerId);
+		q.setString(2, id);
+		q.setInteger(3, customerId);
 		q.executeUpdate();
 	}
 
