@@ -42,7 +42,7 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/spring-web-4.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/spring-webmvc-4.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
-	<classpathentry kind="lib" path="D:/sw/apache-tomcat-7.0.59/lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="D:/sw/apache-tomcat-7.0.59/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="E:/srinivas/softwares/deployed/apache-tomcat-7.0.59/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="E:/srinivas/softwares/deployed/apache-tomcat-7.0.59/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>

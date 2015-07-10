@@ -1,0 +1,12 @@
+<ul class="nav main-menu">
+	<li class="dropdown"><a href="#" class="dropdown-toggle"> <span
+			class="hidden-xs">Dashboard</span>
+	</a>
+		<ul class="dropdown-menu">
+			{{#each rolepermissions}}
+			<li><a class="ajax-link" href="{{path}}"> <span
+					class="hidden-xs">{{name}}</span>
+			</a></li> {{/each}}
+		</ul>
+	</li>
+</ul>

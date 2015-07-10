@@ -1,0 +1,13 @@
+{
+  "loginUsrFirstName":"Srinivasa Reddy",
+  "loginUsrLastName":"Badam",
+  "rolepermissions": [
+     {"name":"Animal Groups","path":"animalgroups"},
+     {"name":"Disposition Status","path":"dispostatus"},
+     {"name":"Animal Abnormalities/Defects","path":"animaldefects"},
+     {"name":"Construct Names","path":"constructnames"},
+     {"name":"Line Number","path":"linenumber"},
+     {"name":"Cryo Preservation Methods","path":"cryomethods"}
+  ]
+  
+}
