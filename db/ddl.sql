@@ -1,4 +1,4 @@
-create table BCOLONY_MASTER_DATA(
+create table EP_BCOLONY_MASTER_DATA(
 id nvarchar(30),
 customerId int,
 type nvarchar(10),
@@ -17,7 +17,7 @@ create index BCOLONY_MASTER_DATA_INDX1 on BCOLONY_MASTER_DATA(name,type,speciesI
 create index BCOLONY_MASTER_DATA_INDX2 on BCOLONY_MASTER_DATA(type,customerId);
 create index BCOLONY_MASTER_DATA_INDX3 on BCOLONY_MASTER_DATA(type,speciesId,customerId);
 
-create table BCOLONY_GROUP_MSTR(
+create table EP_BCOLONY_GROUP_MSTR(
 id nvarchar(30),
 customerId int,
 name nvarchar(50),

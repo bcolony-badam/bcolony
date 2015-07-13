@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ksi.bcolony.model.MasterData;
@@ -23,7 +24,7 @@ public class MasterDataController {
 	@Autowired
 	SessionData session;
 
-	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public MasterData get(@PathVariable("id") String id) {
 		return service.get(session.getCustomerId(), id);
 	}
@@ -38,7 +39,7 @@ public class MasterDataController {
 		return service.save(mdata);
 	}
 
-	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable("id") String id,
 			@RequestBody MasterData mdata) {
 		mdata.setId(id);
@@ -47,20 +48,19 @@ public class MasterDataController {
 		service.update(mdata);
 	}
 
-	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable("id") String id) {
 		service.delete(session.getCustomerId(), id, session.getLoginId());
 	}
 
-	@RequestMapping(value = "/{type}", method = RequestMethod.GET)
-	public List<MasterData> list(@PathVariable("type") String type) {
-		return service.list(type, session.getCustomerId());
-	}
-
-	@RequestMapping(value = "/{type}/{speciesId}/0", method = RequestMethod.GET)
-	public List<MasterData> list(@PathVariable("type") String type,
-			@PathVariable int speciesId) {
-		return service.list(type, session.getCustomerId(), speciesId);
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public List<MasterData> list(@RequestParam("type") String type,
+			@RequestParam("speciesId") int speciesId) {
+		if (speciesId != 0) {
+			return service.list(type, session.getCustomerId(), speciesId);
+		} else {
+			return service.list(type, session.getCustomerId());
+		}
 	}
 
 }
