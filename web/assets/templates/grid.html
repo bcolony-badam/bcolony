@@ -1,0 +1,46 @@
+<form data-toggle="validator" id="form">
+<table id="jsGrid"></table>
+</form>
+<script>
+$(function() {
+    
+	var db = {
+			
+	}
+    $("#jsGrid").jsGrid({
+        height: "auto",
+        width: "100%",
+ 
+        filtering: false,
+        editing: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+ 
+        pageSize: 20,
+        pageButtonCount: 3,
+ 
+        controller: {
+            loadData: function() {
+                var d = $.Deferred();
+ 
+                $.ajax({
+                    url: "http://services.odata.org/V3/(S(3mnweai3qldmghnzfshavfok))/OData/OData.svc/Products",
+                    dataType: "json"
+                }).done(function(response) {
+                    d.resolve(response.value);
+                });
+ 
+                return d.promise();
+            }
+        },
+ 
+        fields: [
+            { name: "Name", type: "text" },
+            { name: "Description", type: "textarea"},
+            { type: "control" }
+        ]
+    });
+ 
+});
+</script>
