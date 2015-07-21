@@ -7,32 +7,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="assets/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
 <link href="assets/css/font-awesome.css" rel="stylesheet">
+<link href="assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
+<link href="assets/plugins/jsgrid/jsgrid.css" rel="stylesheet">
+<link href="assets/plugins/jsgrid/jsgrid-theme.css" rel="stylesheet">
 <link href="assets/css/bcolony.css" rel="stylesheet">
 <script src="assets/plugins/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="assets/plugins/bootstrap/bootstrap.js" type="text/javascript"></script>
-<script src="assets/plugins/bootsrapvalidator/validator.js" type="text/javascript"></script>
-<script src="assets/plugins/handlebars/handlebars.js" type="text/javascript"></script>
+<script src="assets/plugins/jquery-ui/jquery-ui.min.js"
+	type="text/javascript"></script>
+<script src="assets/plugins/bootstrap/bootstrap.js"
+	type="text/javascript"></script>
+<script src="assets/plugins/bootsrapvalidator/validator.js"
+	type="text/javascript"></script>
+<script src="assets/plugins/handlebars/handlebars.js"
+	type="text/javascript"></script>
+<script src="assets/plugins/jsgrid/jsgrid.js" type="text/javascript"></script>
 <script src="assets/js/bcolony.js" type="text/javascript"></script>
 </head>
 <body>
-	<header class="navbar" id="header"></header>
-	<div id="main" class="container-fluid">
-		<div class="row">
-			<div id="sidebar-left" class="col-xs-2 col-sm-2"></div>
-			<!--Start Content-->
-			<div id="content" class="col-xs-12 col-sm-10">
-				<div id="preloader">
-					<img src="assets/img/getdata.gif" class="getdata" alt="preloader" />
-				</div>
-				<div id="main-content"></div>
+	<div id="wrapper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div id="header"></div>
+			<div id="sidebar-left"></div>
+		</nav>
+		<div id="page-wrapper">
+			<div id="preloader">
+				<img src="assets/img/getdata.gif" class="getdata" alt="preloader" />
 			</div>
+			<div id="top-nav-content">
+				
+			</div>
+			<div id="main-content"></div>
 		</div>
 	</div>
 	<script>
-		$(document).ready(function() {
-			CORE.Templates.renderContent(EnvProps.userDataURL, "header","header");
-			CORE.Templates.renderContent(EnvProps.userDataURL, "leftnav","sidebar-left");
-		});
+		$(document).ready(
+				function() {
+					CORE.Templates.renderContent(EnvProps.userDataURL,
+							"header", "header");
+					CORE.Templates.renderContent(EnvProps.userDataURL,
+							"leftnav", "sidebar-left");
+				});
 	</script>
 </body>
 </html>

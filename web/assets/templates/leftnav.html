@@ -1,12 +1,13 @@
-<ul class="nav main-menu">
-	<li class="dropdown"><a href="#" class="dropdown-toggle"> <span
-			class="hidden-xs">Dashboard</span>
-	</a>
-		<ul class="dropdown-menu">
-			{{#each rolepermissions}}
-			<li><a class="ajax-link" href="{{path}}"> <span
-					class="hidden-xs">{{name}}</span>
-			</a></li> {{/each}}
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			<li><a href="#"><i class="fa fa-dashboard fa-fw"></i>
+					Dashboard<span class="fa arrow"></span></a>
+				<ul class="nav nav-second-level">
+					{{#each rolepermissions}}
+					<li><a class="ajax-link" href="{{path}}">{{name}}</a></li>
+					{{/each}}
+				</ul>
 		</ul>
-	</li>
-</ul>
+	</div>
+</div>

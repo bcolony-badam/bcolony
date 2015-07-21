@@ -10,20 +10,17 @@ var CORE = {
 	Templates : {
 		getTemplate : function(name) {
 			if (Handlebars.templates === undefined
-					|| Handlebars.templates[name] === undefined
-					|| EnvProps.envName === "dev") {
+					|| Handlebars.templates[name] === undefined) {
 				$.ajax({
 					url : EnvProps.templatesPath + name + EnvProps.templateExt,
-					success : function(data) {
-						if (Handlebars.templates === undefined) {
-							Handlebars.templates = {};
-						}
-						Handlebars.templates[name] = Handlebars.compile(data);
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						return Handlebars.compile("");
-					},
 					async : false
+				}).done(function(data) {
+					if (Handlebars.templates === undefined) {
+						Handlebars.templates = {};
+					}
+					Handlebars.templates[name] = Handlebars.compile(data);
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					return Handlebars.compile("");
 				});
 			}
 			return Handlebars.templates[name];
@@ -42,15 +39,12 @@ var CORE = {
 			$.ajax({
 				url : url,
 				type : 'GET',
-				success : function(data) {
-					self.render("main-content", tmpl, data);
-					$("#preloader").hide();
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(errorThrown);
-				},
-				dataType : "json",
-				async : false
+				dataType : "json"
+			}).done(function(data) {
+				self.render("main-content", tmpl, data);
+				$("#preloader").hide();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
 			});
 		},
 		renderContent : function(url, tmpl, id) {
@@ -58,14 +52,11 @@ var CORE = {
 			$.ajax({
 				url : url,
 				type : 'GET',
-				success : function(data) {
-					self.render(id, tmpl, data);
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(errorThrown);
-				},
-				dataType : "json",
-				async : false
+				dataType : "json"
+			}).done(function(data) {
+				self.render(id, tmpl, data);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
 			});
 		},
 		renderTable : function(url) {
@@ -74,15 +65,12 @@ var CORE = {
 			$.ajax({
 				url : url,
 				type : 'GET',
-				success : function(data) {
-					// Need to implemet js-grid
-					$("#preloader").hide();
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(errorThrown);
-				},
-				dataType : "json",
-				async : false
+				dataType : "json"
+			}).done(function(data) {
+				// Need to implemet js-grid
+				$("#preloader").hide();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
 			});
 		}
 	},
@@ -91,16 +79,13 @@ var CORE = {
 			$.ajax({
 				url : EnvProps.lablesURL,
 				type : 'GET',
-				success : function(data) {
-					Handlebars.registerHelper('lbl', function(options) {
-						return options.fn(data);
-					});
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(errorThrown);
-				},
-				dataType : "json",
-				async : false
+				dataType : "json"
+			}).done(function(data) {
+				Handlebars.registerHelper('lbl', function(options) {
+					return options.fn(data);
+				});
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
 			});
 		}
 	}
@@ -128,51 +113,53 @@ var CORE = {
 	};
 
 })(jQuery);
+$(function() {
+	$(window)
+			.bind(
+					"load resize",
+					function() {
+						var topOffset = 50;
+						var width = (this.window.innerWidth > 0) ? this.window.innerWidth
+								: this.screen.width;
+						if (width < 768) {
+							$('div.navbar-collapse').addClass('collapse');
+							topOffset = 100; // 2-row-menu
+						} else {
+							$('div.navbar-collapse').removeClass('collapse');
+						}
+
+						var height = ((this.window.innerHeight > 0) ? this.window.innerHeight
+								: this.screen.height) - 1;
+						height = height - topOffset;
+						if (height < 1)
+							height = 1;
+						if (height > topOffset) {
+							$("#page-wrapper").css("min-height",
+									(height) + "px");
+						}
+					});
+
+	var url = window.location;
+	var element = $('ul.nav a').filter(function() {
+		return this.href == url || url.href.indexOf(this.href) == 0;
+	}).addClass('active').parent().parent().addClass('in').parent();
+	if (element.is('li')) {
+		element.addClass('active');
+	}
+});
 
 $(document).ready(function() {
 	CORE.Lables.loadLables();
-	
-	$('#sidebar-left').on('click', 'a', function (e) {
-		var parents = $(this).parents('li');
-		var li = $(this).closest('li.dropdown');
-		var another_items = $('.main-menu li').not(parents);
-		another_items.find('a').removeClass('active');
-		another_items.find('a').removeClass('active-parent');
-		if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
-			$(this).addClass('active-parent');
-			var current = $(this).next();
-			if (current.is(':visible')) {
-				li.find("ul.dropdown-menu").slideUp('fast');
-				li.find("ul.dropdown-menu a").removeClass('active')
-			}
-			else {
-				another_items.find("ul.dropdown-menu").slideUp('fast');
-				current.slideDown('fast');
-			}
-		}
-		else {
-			if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
-				var pre = $(this).closest('ul.dropdown-menu');
-				pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
-			}
-		}
-		if ($(this).hasClass('active') == false) {
-			$(this).parents("ul.dropdown-menu").find('a').removeClass('active');
-			$(this).addClass('active')
-		}
-		if ($(this).hasClass('ajax-link')) {
-			e.preventDefault();
-			if ($(this).hasClass('add-full')) {
-				$('#content').addClass('full-content');
-			}
-			else {
-				$('#content').removeClass('full-content');
-			}
-			var url = $(this).attr('href');
-			window.location.hash = url;
-		}
+	$('#sidebar-left,breadcrumb').on('click', 'a', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		window.location.hash = url;
 		if ($(this).attr('href') == '#') {
-			e.preventDefault();
+			return;
+		} else {
+			$("#preloader").show();
+			CORE.Templates.render("main-content", "grid");
+			$("#preloader").hide();
 		}
 	});
 });

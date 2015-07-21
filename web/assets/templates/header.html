@@ -1,23 +1,20 @@
-<div class="container-fluid expanded-panel">
-	<div class="row">
-		<div id="logo" class="col-xs-12 col-sm-2">
-			<a href="index.html">{{#lbl}}{{header_projname}}{{/lbl}}</a>
-		</div>
-		<div id="top-panel" class="col-xs-12 col-sm-10">
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 top-panel-right">
-					<ul class="nav navbar-nav pull-right panel-menu">
-						<li class="dropdown"><a href="#" data-toggle="dropdown">
-								<i class="fa fa-angle-down pull-right"></i> <span>{{loginUsrLastName}}, {{loginUsrFirstName}}</span>
-
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="#"><span>{{#lbl}}{{header_logout}}{{/lbl}}</span>
-								</a></li>
-							</ul></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse"
+		data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+		<span class="icon-bar"></span> <span class="icon-bar"></span>
+	</button>
+	<a class="navbar-brand" href="index.html"><img
+		src="assets/img/keylogo.png" style="height: 45px;" /></a>
 </div>
+<ul class="nav navbar-top-links navbar-right">
+	<li class="dropdown"><a class="dropdown-toggle"
+		data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+			<i class="fa fa-caret-down"></i>
+	</a>
+		<ul class="dropdown-menu dropdown-user">
+			<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>
+					Logout</a></li>
+		</ul>
+	</li>
+</ul>
