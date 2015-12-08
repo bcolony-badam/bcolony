@@ -1,99 +1,87 @@
 "use strict";
 var EnvProps = {
-	envName : "dev",
 	templatesPath : "assets/templates/",
 	templateExt : ".html",
 	lablesURL : "assets/json/lables.json",
 	userDataURL : "assets/json/userdata.json"
 };
-var CORE = {
-	Templates : {
-		getTemplate : function(name) {
-			if (Handlebars.templates === undefined
-					|| Handlebars.templates[name] === undefined) {
-				$.ajax({
-					url : EnvProps.templatesPath + name + EnvProps.templateExt,
-					async : false
-				}).done(function(data) {
-					if (Handlebars.templates === undefined) {
-						Handlebars.templates = {};
-					}
-					Handlebars.templates[name] = Handlebars.compile(data);
-				}).fail(function(jqXHR, textStatus, errorThrown) {
-					return Handlebars.compile("");
-				});
-			}
-			return Handlebars.templates[name];
-		},
-		render : function(id, tmplName, data) {
-			var compiledTmpl = this.getTemplate(tmplName);
-			$("#" + id).html(compiledTmpl(data));
-		},
-		getContent : function(tmplName, data) {
-			var compiledTmpl = this.getTemplate(tmplName);
-			return compiledTmpl(data);
-		},
-		renderMainContent : function(url, tmpl) {
-			$("#preloader").show();
-			var self = this;
-			$.ajax({
-				url : url,
-				type : 'GET',
-				dataType : "json"
-			}).done(function(data) {
-				self.render("main-content", tmpl, data);
-				$("#preloader").hide();
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
+
+var Lables = {
+	lableMap : {},
+	loadLables : function() {
+		var self = this;
+		$.ajax({
+			url : EnvProps.lablesURL,
+			type : 'GET',
+			dataType : "json",
+			async : false
+		}).done(function(data) {
+			Handlebars.registerHelper('lbl', function(options) {
+				return options.fn(data);
 			});
-		},
-		renderContent : function(url, tmpl, id) {
-			var self = this;
-			$.ajax({
-				url : url,
-				type : 'GET',
-				dataType : "json"
-			}).done(function(data) {
-				self.render(id, tmpl, data);
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
-			});
-		},
-		renderTable : function(url) {
-			$("#preloader").show();
-			var self = this;
-			$.ajax({
-				url : url,
-				type : 'GET',
-				dataType : "json"
-			}).done(function(data) {
-				// Need to implemet js-grid
-				$("#preloader").hide();
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
-			});
-		}
+			self.lableMap = data;
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+		});
 	},
-	Lables : {
-		loadLables : function() {
-			$.ajax({
-				url : EnvProps.lablesURL,
-				type : 'GET',
-				dataType : "json"
-			}).done(function(data) {
-				Handlebars.registerHelper('lbl', function(options) {
-					return options.fn(data);
-				});
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
-			});
-		}
+	get : function(key) {
+		return this.lableMap[key];
 	}
 };
+var Templates = {
+	getTemplate : function(name) {
+		if (Handlebars.templates === undefined
+				|| Handlebars.templates[name] === undefined) {
+			$.ajax({
+				url : EnvProps.templatesPath + name + EnvProps.templateExt,
+				async : false
+			}).done(function(data) {
+				if (Handlebars.templates === undefined) {
+					Handlebars.templates = {};
+				}
+				Handlebars.templates[name] = Handlebars.compile(data);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				return Handlebars.compile("");
+			});
+		}
+		return Handlebars.templates[name];
+	},
+	render : function(id, tmplName, data) {
+		var compiledTmpl = this.getTemplate(tmplName);
+		$("#" + id).html(compiledTmpl(data));
+	},
+	getContent : function(tmplName, data) {
+		var compiledTmpl = this.getTemplate(tmplName);
+		return compiledTmpl(data);
+	},
+	renderMainContent : function(url, tmpl) {
+		var self = this;
+		$.ajax({
+			url : url,
+			type : 'GET',
+			dataType : "json"
+		}).done(function(data) {
+			self.render("main-content", tmpl, data);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+		});
+	},
+	renderContent : function(url, tmpl, id) {
+		var self = this;
+		$.ajax({
+			url : url,
+			type : 'GET',
+			dataType : "json"
+		}).done(function(data) {
+			self.render(id, tmpl, data);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+		});
+	}
+};
+
 (function($) {
 	$.fn.serializeObject = function() {
-		"use strict";
-
 		var result = {};
 		var extend = function(i, element) {
 			var node = result[element.name];
@@ -113,6 +101,7 @@ var CORE = {
 	};
 
 })(jQuery);
+
 $(function() {
 	$(window)
 			.bind(
@@ -123,7 +112,7 @@ $(function() {
 								: this.screen.width;
 						if (width < 768) {
 							$('div.navbar-collapse').addClass('collapse');
-							topOffset = 100; // 2-row-menu
+							topOffset = 100;
 						} else {
 							$('div.navbar-collapse').removeClass('collapse');
 						}
@@ -147,9 +136,102 @@ $(function() {
 		element.addClass('active');
 	}
 });
+//---------------------------------------------------//
+//Start breeding colony specific
+function jsGridController(mainurl) {
+	var instance = {};
+    instance.loadData = function() {
+        var d = $.Deferred();
+        $.ajax({
+        	url : mainurl,
+            dataType: "json"
+        }).done(function(response) {
+            d.resolve(response);
+        });
+        return d.promise();
+    };
+    instance.insertItem = function(item) {
+    	var d = $.Deferred();
+        $.ajax({
+            type: "POST",
+            url: mainurl,
+            data: JSON.stringify(item),
+            dataType: "json",
+            contentType : "application/json"
+        }).done(function(response) {
+        	item.id=response;
+            d.resolve(item);
+        });
+        return d.promise();
+    };
+    instance.updateItem = function(item) {
+    	var d = $.Deferred();
+        return $.ajax({
+            type: "PUT",
+            url: mainurl+"/"+item.id,
+            data: JSON.stringify(item),
+            contentType : "application/json"
+        }).done(function() {
+            d.resolve(item);
+        });
+        return d.promise();
+    };
+    instance.deleteItem = function(item) {
+    	var d = $.Deferred();
+        return $.ajax({
+            type: "DELETE",
+            url: mainurl+"/"+item.id
+        }).done(function() {
+            d.resolve(item);
+        });
+        return d.promise();
+    };	
+    return instance;
+}
+jsGrid.setDefaults({
+	height: "auto",
+    width: "100%",
 
+    filtering: false,
+    editing: true,
+    sorting: true,
+    paging: true,
+    autoload: true,
+    inserting:true,
+    pageLoading:false,
+    loadIndication:false,
+    pageSize: 20
+});
+
+var MasterData = {
+	load : function(hash) {
+			$("#main-content").html("<table id='jsGrid'></table>");
+			$("#jsGrid").jsGrid({
+			    pageButtonCount: 3,
+			    controller: jsGridController(hash),
+			    fields: [
+			        { name: "name", type: "text" },
+			        { name: "description", type: "textarea"},
+			        { type: "control" }
+			    ]
+			});
+	},
+    breadcrumb:function(hash) {
+    	return {"data":[{"path":"index.html","name":"Dashborad"},{"path":"animalgroups","name":"animalgroups"}]};
+    }
+};
+
+function renderMainContent(hash) {
+	MasterData.load(hash);
+}
+function setPageTitle(hash) {
+	//TODO
+}
+function renderBreadCrumb(hash) {
+	Templates.render("top-nav-content","topnav",MasterData.breadcrumb(hash));
+}
 $(document).ready(function() {
-	CORE.Lables.loadLables();
+	Lables.loadLables();
 	$('#sidebar-left,breadcrumb').on('click', 'a', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('href');
@@ -157,9 +239,9 @@ $(document).ready(function() {
 		if ($(this).attr('href') == '#') {
 			return;
 		} else {
-			$("#preloader").show();
-			CORE.Templates.render("main-content", "grid");
-			$("#preloader").hide();
+			setPageTitle(url);
+			renderBreadCrumb(url);
+			renderMainContent(url);
 		}
 	});
 });

@@ -51,7 +51,7 @@ public class MasterDataDaoImpl implements MasterDataDao {
 	public void update(MasterData mdata) {
 		Query q = session().createQuery(
 				"update MasterData set description=?,modifiedBy=?,modifiedOn=?"
-						+ " where id=? and customerId=?");
+						+ " where id=? and customerId=? and deleted=0");
 		q.setString(0, mdata.getDescription());
 		q.setString(1, mdata.getModifiedBy());
 		q.setLong(2, new Date().getTime());
@@ -87,7 +87,7 @@ public class MasterDataDaoImpl implements MasterDataDao {
 	public List<MasterData> list(String type, int customerId, int speciesId) {
 		Query q = session()
 				.createQuery(
-						"from MasterData where type=? and speciesId=? and customerId=?");
+						"from MasterData where type=? and speciesId=? and customerId=? and deleted=0");
 		q.setString(0, type);
 		q.setInteger(1, speciesId);
 		q.setInteger(2, customerId);

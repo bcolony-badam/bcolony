@@ -24,7 +24,7 @@ public class MasterDataController {
 	@Autowired
 	SessionData session;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.GET)
 	public MasterData get(@PathVariable("id") String id) {
 		return service.get(session.getCustomerId(), id);
 	}
@@ -39,7 +39,7 @@ public class MasterDataController {
 		return service.save(mdata);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable("id") String id,
 			@RequestBody MasterData mdata) {
 		mdata.setId(id);
@@ -48,19 +48,16 @@ public class MasterDataController {
 		service.update(mdata);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{type}/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable("id") String id) {
 		service.delete(session.getCustomerId(), id, session.getLoginId());
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public List<MasterData> list(@RequestParam("type") String type,
-			@RequestParam("speciesId") int speciesId) {
-		if (speciesId != 0) {
-			return service.list(type, session.getCustomerId(), speciesId);
-		} else {
-			return service.list(type, session.getCustomerId());
-		}
+	@RequestMapping(value = "/{type}", method = RequestMethod.GET)
+	public List<MasterData> list(@PathVariable("type") String type,
+			@RequestParam(value = "speciesId", defaultValue = "0") int speciesId) {
+		return service.list(type, session.getCustomerId(), speciesId);
+
 	}
 
 }

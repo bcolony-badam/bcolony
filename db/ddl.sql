@@ -12,10 +12,9 @@ modifiedBy nvarchar(50),
 deleted int
 );
 
-alter table BCOLONY_MASTER_DATA add constraint BCOLONY_MASTER_DATA_PK primary key(id);
-create index BCOLONY_MASTER_DATA_INDX1 on BCOLONY_MASTER_DATA(name,type,speciesId,customerId);
-create index BCOLONY_MASTER_DATA_INDX2 on BCOLONY_MASTER_DATA(type,customerId);
-create index BCOLONY_MASTER_DATA_INDX3 on BCOLONY_MASTER_DATA(type,speciesId,customerId);
+alter table EP_BCOLONY_MASTER_DATA add constraint BCOLONY_MASTER_DATA_PK primary key(id);
+create index EP_BCOLONY_MASTER_DATA_INDX1 on EP_BCOLONY_MASTER_DATA(name,type,speciesId,customerId);
+create index EP_BCOLONY_MASTER_DATA_INDX2 on EP_BCOLONY_MASTER_DATA(type,speciesId,customerId);
 
 create table EP_BCOLONY_GROUP_MSTR(
 id nvarchar(30),
